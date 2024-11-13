@@ -11,12 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("divideae")
@@ -33,12 +29,18 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
+        try{
+            var emailPassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+            var auth = this.authenticationManager.authenticate(emailPassword);
 
-        var token =  tokenService.generateToken((User) auth.getPrincipal());
+            var token =  tokenService.generateToken((User) auth.getPrincipal());
+            return ResponseEntity.ok(new LoginResponseDTO(token));
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        } catch(Exception e){
+            System.out.println("Erro ao efetuar login");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @PostMapping("/register")
@@ -46,7 +48,7 @@ public class AuthenticationController {
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, data.role());
+        User newUser = new User(data.login(), encryptedPassword, data.role(), data.CPF(), data.nome(), data.datanascimento(), data.chavepix());
         this.repository.save(newUser);
         return ResponseEntity.ok().build();
     }

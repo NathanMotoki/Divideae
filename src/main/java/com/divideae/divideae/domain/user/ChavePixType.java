@@ -3,7 +3,8 @@ package com.divideae.divideae.domain.user;
 public enum ChavePixType {
     CPF("cpf"),
     EMAIL("email"),
-    TELEFONE("telefone");
+    TELEFONE("telefone"),
+    ALEATORIA("aleatoria");
 
     private String chavePix;
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -25,11 +26,19 @@ public class User implements UserDetails {
     private String login;
     private String password;
     private UserRole role;
+    private String CPF;
+    private String nome;
+    private String datanascimento;
+    private ChavePixType chavepix;
 
-    public User(String login, String password, UserRole role){
+    public User(String login, String password, UserRole role, String CPF, String nome, String datanascimento, ChavePixType chavepix){
         this.login = login;
         this.password = password;
         this.role = role;
+        this.CPF = CPF;
+        this.nome = nome;
+        this.datanascimento = datanascimento;
+        this.chavepix = chavepix;
     }
 
     @Override
