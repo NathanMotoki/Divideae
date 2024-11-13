@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,12 +23,16 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String login;
+    private String email;
     private String password;
     private UserRole role;
+    private String CPF;
+    private String nome;
+    private LocalDate dtNascimento;
+    private ChavePixType chavePix;
 
-    public User(String login, String password, UserRole role){
-        this.login = login;
+    public User(String email, String password, UserRole role){
+        this.email = email;
         this.password = password;
         this.role = role;
     }
@@ -40,7 +45,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 
     @Override
