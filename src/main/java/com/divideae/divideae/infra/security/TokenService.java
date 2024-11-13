@@ -24,7 +24,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("divideae-auth-api")
-                    .withSubject(user.getEmail())
+                    .withSubject(user.getLogin())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;

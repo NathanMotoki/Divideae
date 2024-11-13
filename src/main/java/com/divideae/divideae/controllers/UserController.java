@@ -1,27 +1,33 @@
 package com.divideae.divideae.controllers;
 
 import com.divideae.divideae.domain.user.User;
+import com.divideae.divideae.repositories.UserRepository;
 import com.divideae.divideae.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
+
     private UserService userService;
 
+    @Autowired
+    private UserRepository repository;
+
     @GetMapping
-    public List<User> findUsers(){
-        System.out.println("entrou findUsers()");
-        List<User> users = userService.findUsers();
-        return users;
+    public ResponseEntity findAllUsers(){
+        var allUsers = repository.findAll();
+        return ResponseEntity.ok(allUsers);
     }
 
-    @GetMapping("/{id}")
-    public User findUser(@PathVariable("id") String id){
-        return userService.findUser(id);
+    @GetMapping("{id}")
+    public ResponseEntity findUser(@PathVariable("id") String id){
+        var user = repository.findById(id);
+        return ResponseEntity.ok(user);
     }
 }
