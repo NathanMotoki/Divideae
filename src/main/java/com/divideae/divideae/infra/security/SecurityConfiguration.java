@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/divideae/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/divideae/register").permitAll()
+                        .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/divideae").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

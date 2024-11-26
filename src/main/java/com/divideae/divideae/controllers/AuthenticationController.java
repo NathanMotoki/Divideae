@@ -8,6 +8,7 @@ import com.divideae.divideae.infra.security.TokenService;
 import com.divideae.divideae.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("divideae")
 public class AuthenticationController {
 
@@ -39,16 +41,16 @@ public class AuthenticationController {
         } catch(Exception e){
             System.out.println("Erro ao efetuar login");
             e.printStackTrace();
+            return ResponseEntity.badRequest().body("Erro ao efetuar login");
         }
-        return null;
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if(this.repository.findByLogin(data.login()) != null)  return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado :(");
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, data.role(), data.CPF(), data.nome(), data.datanascimento(), data.chavepix());
+        User newUser = new User(data.login(), encryptedPassword);
         this.repository.save(newUser);
         return ResponseEntity.ok().build();
     }
