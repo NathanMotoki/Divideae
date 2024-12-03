@@ -28,7 +28,8 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/divideae/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/divideae/register").permitAll()
+                        .requestMatchers("/divideae/register").permitAll()
+                        .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/divideae").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

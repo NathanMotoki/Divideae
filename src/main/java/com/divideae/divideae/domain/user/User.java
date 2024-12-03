@@ -31,14 +31,19 @@ public class User implements UserDetails {
     private String datanascimento;
     private ChavePixType chavepix;
 
-    public User(String login, String password, UserRole role, String CPF, String nome, String datanascimento, ChavePixType chavepix){
+//    public User(String login, String password, UserRole role, String CPF, String nome, String datanascimento, ChavePixType chavepix){
+//        this.login = login;
+//        this.password = password;
+//        this.role = role;
+//        this.CPF = CPF;
+//        this.nome = nome;
+//        this.datanascimento = datanascimento;
+//        this.chavepix = chavepix;
+//    }
+
+    public User(String login, String password){
         this.login = login;
         this.password = password;
-        this.role = role;
-        this.CPF = CPF;
-        this.nome = nome;
-        this.datanascimento = datanascimento;
-        this.chavepix = chavepix;
     }
 
     @Override
