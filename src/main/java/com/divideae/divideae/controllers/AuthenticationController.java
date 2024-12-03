@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin
 @RequestMapping("divideae")
@@ -36,22 +38,34 @@ public class AuthenticationController {
             var auth = this.authenticationManager.authenticate(emailPassword);
 
             var token =  tokenService.generateToken((User) auth.getPrincipal());
-            return ResponseEntity.ok(new LoginResponseDTO(token));
 
+            var user = (User) auth.getPrincipal();
+
+            var response = Map.of(
+                    "id", user.getId(),
+                    "email", user.getLogin(),
+                    "token", token
+            );
+            System.out.println(response);
+            return ResponseEntity.ok(response);
         } catch(Exception e){
-            System.out.println("Erro ao efetuar login");
             e.printStackTrace();
-            return ResponseEntity.badRequest().body("Erro ao efetuar login");
+            return ResponseEntity.badRequest().body(Map.of("message", "Erro ao efetuar login, tente novamente"));
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.repository.findByLogin(data.login()) != null)  return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado :(");
+        try{
+            if(this.repository.findByLogin(data.login()) != null)  return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "Email já cadastrado"));
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword);
-        this.repository.save(newUser);
-        return ResponseEntity.ok().build();
+            String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+            User newUser = new User(data.login(), encryptedPassword);
+            this.repository.save(newUser);
+            return ResponseEntity.ok().build();
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(Map.of("message", "Erro ao efetuar cadastro: " + e));
+        }
+
     }
 }
