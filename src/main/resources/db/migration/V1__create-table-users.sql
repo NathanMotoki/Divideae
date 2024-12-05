@@ -6,5 +6,6 @@ CREATE TABLE users (
     Cpf TEXT,
     nome TEXT,
     datanascimento TEXT,
-    chavepix TEXT
+    chavepix TEXT,
+    isProfileComplete BOOLEAN DEFAULT FALSE
 );

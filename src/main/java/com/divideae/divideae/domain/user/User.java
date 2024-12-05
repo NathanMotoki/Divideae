@@ -30,6 +30,8 @@ public class User implements UserDetails {
     private String nome;
     private String datanascimento;
     private ChavePixType chavepix;
+    @Column(name = "isprofilecomplete")
+    private boolean isProfileComplete;
 
 //    public User(String login, String password, UserRole role, String CPF, String nome, String datanascimento, ChavePixType chavepix){
 //        this.login = login;

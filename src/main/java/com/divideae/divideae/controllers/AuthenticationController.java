@@ -41,11 +41,24 @@ public class AuthenticationController {
 
             var user = (User) auth.getPrincipal();
 
-            var response = Map.of(
+            /*var response = Map.of(
                     "id", user.getId(),
                     "email", user.getLogin(),
+                    "dtNascimento", user.getDatanascimento(),
+                    "pix", user.getChavepix(),
                     "token", token
+            );*/
+
+            LoginResponseDTO response = new LoginResponseDTO(
+                    user.getId(),
+                    user.getLogin(),
+                    user.getNome(),
+                    user.getChavepix(),
+                    user.getDatanascimento(),
+                    user.isProfileComplete(),
+                    token
             );
+
             System.out.println(response);
             return ResponseEntity.ok(response);
         } catch(Exception e){
