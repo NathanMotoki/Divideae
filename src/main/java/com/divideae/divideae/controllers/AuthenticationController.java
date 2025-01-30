@@ -1,8 +1,8 @@
 package com.divideae.divideae.controllers;
 
-import com.divideae.divideae.domain.user.AuthenticationDTO;
-import com.divideae.divideae.domain.user.LoginResponseDTO;
-import com.divideae.divideae.domain.user.RegisterDTO;
+import com.divideae.divideae.domain.user.dto.AuthenticationDTO;
+import com.divideae.divideae.domain.user.dto.LoginResponseDTO;
+import com.divideae.divideae.domain.user.dto.RegisterDTO;
 import com.divideae.divideae.domain.user.User;
 import com.divideae.divideae.infra.security.TokenService;
 import com.divideae.divideae.repositories.UserRepository;
@@ -41,12 +41,15 @@ public class AuthenticationController {
 
             var user = (User) auth.getPrincipal();
 
-            var response = Map.of(
-                    "id", user.getId(),
-                    "email", user.getLogin(),
-                    "token", token
+            LoginResponseDTO response = new LoginResponseDTO(
+                    user.getId(),
+                    user.getLogin(),
+                    user.getName(),
+                    user.getPixKey(),
+                    user.isProfileComplete(),
+                    token
             );
-            System.out.println(response);
+
             return ResponseEntity.ok(response);
         } catch(Exception e){
             e.printStackTrace();

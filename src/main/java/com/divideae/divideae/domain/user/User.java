@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,23 +22,19 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @Column(name = "email")
     private String login;
+
     private String password;
     private UserRole role;
-    private String CPF;
-    private String nome;
-    private String datanascimento;
-    private ChavePixType chavepix;
+    private String name;
 
-//    public User(String login, String password, UserRole role, String CPF, String nome, String datanascimento, ChavePixType chavepix){
-//        this.login = login;
-//        this.password = password;
-//        this.role = role;
-//        this.CPF = CPF;
-//        this.nome = nome;
-//        this.datanascimento = datanascimento;
-//        this.chavepix = chavepix;
-//    }
+    @Column(name = "pix_key")
+    private String pixKey;
+
+    @Column(name = "is_profile_complete")
+    private boolean isProfileComplete;
 
     public User(String login, String password){
         this.login = login;
